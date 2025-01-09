@@ -1,7 +1,7 @@
 // deno-lint-ignore-file
 import { Wall } from "https://deno.land/x/remapper@3.1.2/src/mod.ts";
 
-function Square(startTime: number, endTime: number, track: string, x: number, y: number, z: number, length: number) {
+export function Square(startTime: number, endTime: number, track: string, x: number, y: number, z: number, length: number) {
     let wall1 = new Wall(startTime, endTime - startTime, 0, 1)
 
         wall1.track.value = track,

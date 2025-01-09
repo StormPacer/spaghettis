@@ -1,7 +1,7 @@
 // deno-lint-ignore-file
 import { Wall } from "https://deno.land/x/remapper@3.1.2/src/mod.ts";
 
-function Circle(startTime: number, endTime: number, track: string, radius: number, amount: number, height: number, length: number, x: number, y: number, z: number) {
+export function Circle(startTime: number, endTime: number, track: string, radius: number, amount: number, height: number, length: number, x: number, y: number, z: number) {
     for (let i = 0; i < amount; i++) {
         let wall = new Wall(startTime, endTime - startTime, 0, 0, 0)
 

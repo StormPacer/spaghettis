@@ -9,7 +9,7 @@ import { activeDiff } from "https://deno.land/x/remapper@3.1.2/src/mod.ts";
  * @author IntoTheAbyss490(Updating Everything)
  */
 
-function GiveNotesTrack(track: string, t1: number, t2: number) {
+export function GiveNotesTrack(track: string, t1: number, t2: number) {
     const filterednotes = activeDiff.notes.filter(n => n.time >= t1 && n.time <= t2)
     filterednotes.forEach(note => {
         if (!note.track.value) note.track.value = track
@@ -29,7 +29,7 @@ function GiveNotesTrack(track: string, t1: number, t2: number) {
  * @author IntoTheAbyss490(Updating Everything) 
  */
 
-function GiveWallsTrack(track: string, t1: number, t2: number) {
+export function GiveWallsTrack(track: string, t1: number, t2: number) {
     const filteredwalls = activeDiff.walls.filter(o => o.time >= t1 && o.time <= t2)
     filteredwalls.forEach(wall => {
         if (!wall.customData) wall.customData = {};
@@ -39,5 +39,3 @@ function GiveWallsTrack(track: string, t1: number, t2: number) {
 }
 
 //GiveWallsTrack("Track", 0, 100)
-
-export {GiveNotesTrack, GiveWallsTrack}
