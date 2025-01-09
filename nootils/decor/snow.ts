@@ -1,33 +1,36 @@
-import {Random} from "../internal/random.ts"
-
-import * as Remapper from "https://deno.land/x/remapper@3.0.0/src/mod.ts"
+// deno-lint-ignore-file
+import { rand } from "https://deno.land/x/remapper@3.1.2/src/mod.ts";
+import { Wall } from "https://deno.land/x/remapper@3.1.2/src/mod.ts";
 
 /**
  * Spawns in walls that resemble snow.
  * @param startingBeat The beat that the snow should start on.
  * @param duration For how many beats the snow should last for.
  * @param amount How many walls should be created per beat.
+ * @param R The red value for the color.
+ * @param G The green value for the color.
+ * @param B The blue value for the color.
+ * @param A The alpha value for the color.
  * @author StormPacer
+ * @author IntoTheAbyss490(Updating Everything)
  */
 
-export function Snow(startingBeat: number, duration: number, amount: number) {
+export function Snow(startingBeat: number, duration: number, amount: number, R: number, G: number, B: number, A: number) {
     for (let i = 0; i < (duration * amount); i++) {
-        let x = Random(-40, 40)
-        let z = Random(0, 50)
-        let y = Random(60, 80)
+        let x = rand(-40, 40)
+        let z = rand(0, 50)
+        let y = rand(60, 80)
 
-        let wall = new Remapper.Wall(startingBeat + (i / amount), 5, 1, 0, 0);
+        let wall = new Wall(startingBeat + (i / amount), 5, 1, 0, 0);
 
-        wall.customData = {
-            _color: [1, 1, 1, 4],
-            _interactable: false,
-            _scale: [0.2, 0.2, 0.2],
-            _animation: {
-                _dissolve: [[0, 0.1], [1, 0.2], [1, 0.9], [0, 1]],
-                _definitePosition: [[x, (y = y - 15), z, 0], [(x + Random(-4, 4)), (y = y - 15), (z + Random(-5, 5)), 0.2], [(x + Random(-4, 4)), (y = y - 15), (z + Random(-5, 5)), 0.4], [(x + Random(-4, 4)), (y = y - 15), (z + Random(-5, 5)), 0.6], [(x + Random(-4, 4)), (y = y - 15), (z + Random(-5, 5)), 0.8], [(x + Random(-4, 4)), (y = y - 15), (z + Random(-5, 5)), 1]]
-            }
-        };
-
-        wall.push(true);
+        wall.color = [R, G, B, A],
+        wall.interactable = false,
+        wall.scale = [0.2, 0.2, 0.2],
+            wall.animate.dissolve = [[0, 0.1], [1, 0.2], [1, 0.9], [0, 1]],
+            wall.animate.definitePosition = [[x, (y = y - 15), z, 0], [(x + rand(-4, 4)), (y = y - 15), (z + rand(-5, 5)), 0.2], [(x + rand(-4, 4)), (y = y - 15), (z + rand(-5, 5)), 0.4], [(x + rand(-4, 4)), (y = y - 15), (z + rand(-5, 5)), 0.6], [(x + rand(-4, 4)), (y = y - 15), (z + rand(-5, 5)), 0.8], [(x + rand(-4, 4)), (y = y - 15), (z + rand(-5, 5)), 1]]
+    
+        wall.push();    
     }
-}
+};
+
+//Snow(0, 100, 100, 1, 1, 1, 4)
