@@ -1,6 +1,6 @@
-import {Random} from '../internal/random.ts';
-
-import * as Remapper from "https://deno.land/x/remapper@3.0.0/src/mod.ts"
+// deno-lint-ignore-file
+import { rand } from 'https://deno.land/x/remapper@3.1.2/src/mod.ts';
+import { Wall } from 'https://deno.land/x/remapper@3.1.2/src/mod.ts';
 
 /**
  * Spawns in floating pillars on the desired positions and spacing.
@@ -18,9 +18,10 @@ import * as Remapper from "https://deno.land/x/remapper@3.0.0/src/mod.ts"
  * @param B The blue value for the color of the pillars.
  * @param A The alpha value for the color of the pillars.
  * @author StormPacer
+ * @author IntoTheAbyss490(Updating Everything)
  */
 
-export function FloatingPillars(startBeat: number, endBeat: number, amountPerRow: number, spacing: number, startX: number, height: number, width: number, startZ: number, track: string, R: number, G: number, B: number, A: number) {
+export function FloatingPillars(startBeat: number, endBeat: number, amountPerRow: number, spacing: number, startX: number, height: number, width: number, startZ: number, track: string, R: number, G: number, B: number, A: number, min: number, max: number) {
     let z = startZ
     for (let i = 0; i <= amountPerRow; i++) {
         if (z <= spacing * amountPerRow) {
@@ -30,21 +31,19 @@ export function FloatingPillars(startBeat: number, endBeat: number, amountPerRow
                 if (x <= spacing * amountPerRow) {
                     x += spacing
 
-                    let wall = new Remapper.Wall(startBeat, endBeat - startBeat, 1, 0, 0);
+                    let wall = new Wall(startBeat, endBeat - startBeat, 1, 0, 0);
 
-                    wall.customData = {
-                        _track: track,
-                        _color: [R, G, B, A],
-                        _interactable: false,
-                        _scale: [width, height, width],
-                        _animation: {
-                            _definitePosition: [[x, Random(5, 30), z, 0, "easeInOutCubic"], [x, Random(5, 30), z, 0.2, "easeInOutCubic"], [x, Random(5, 30), z, 0.4, "easeInOutCubic"], [x, Random(5, 30), z, 0.6, "easeInOutCubic"], [x, Random(5, 30), z, 0.8, "easeInOutCubic"], [x, Random(5, 30), z, 1, "easeInOutCubic"]]
-                        }
-                    };
-
-                    wall.push(true);
-                }
-            }
+                        wall.track.value = track,
+                        wall.color = [R, G, B, A],
+                        wall.interactable = false,
+                        wall.scale = [width, height, width],
+                        wall.animate.localRotation = [[rand(0, 360), rand(0, 360), rand(0, 360), 0, "easeInOutCubic"], [rand(0, 360), rand(0, 360), rand(0, 360), 0.2, "easeInOutCubic"], [rand(0, 360), rand(0, 360), rand(0, 360), 0.4, "easeInOutCubic"], [rand(0, 360), rand(0, 360), rand(0, 360), 0.6, "easeInOutCubic"], [rand(0, 360), rand(0, 360), rand(0, 360), 0.8, "easeInOutCubic"], [rand(0, 360), rand(0, 360), rand(0, 360), 1, "easeInOutCubic"]],
+                        wall.animate.definitePosition = [[x, rand(min, max, 0.1), z, 0, "easeInOutCubic"], [x, rand(min, max, 0.1), z, 0.2, "easeInOutCubic"], [x, rand(min, max, 0.1), z, 0.4, "easeInOutCubic"], [x, rand(min, max, 0.1), z, 0.6, "easeInOutCubic"], [x, rand(min, max, 0.1), z, 0.8, "easeInOutCubic"], [x, rand(min, max, 0.1), z, 1, "easeInOutCubic"]]
+                    wall.push();
+                    }
+            };
         }
     }
 }
+
+//FloatingPillars(0.125, 168, 12, 12, -65, 0.5, 0.5, -10, "pillarsTrack", 1, 1, 1, 10, 2, 35)

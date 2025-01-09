@@ -1,6 +1,9 @@
-import * as Remapper from "https://deno.land/x/remapper@2.1.0/src/mod.ts"
+// deno-lint-ignore-file
+import { activeDiff, EASE, Note } from "https://deno.land/x/remapper@3.1.2/src/mod.ts";
 
-function InternalGhosty(filteredNotes: Remapper.Note[], speed: number, maxY: number, easing: Remapper.EASE = "easeInOutCubic", transparent?: boolean) {
+/** Base function needed to make the effects in ghosty.ts work*/
+
+export function InternalGhosty(filteredNotes: Note[], speed: number, maxY: number, easing: EASE = "easeInOutCubic", transparent?: boolean) {
     const positions: any = [[0, 0, 0, 0]];
     let positive = false;
     for (let i = speed + 1; i > 0; i--) {
@@ -10,21 +13,21 @@ function InternalGhosty(filteredNotes: Remapper.Note[], speed: number, maxY: num
     }
     positions.push([0, 0, 0, 0.4, easing]);
     filteredNotes.forEach(note => {
-        note.animation = {
-            _dissolve: [
+            note.animate.dissolve = [
                 transparent ? [0, 0] : [1, 0],
             ],
-            _dissolveArrow: [
+            note.animate.dissolveArrow = [
                 [0, 0],
                 [1, 0.05],
             ],
-            _position: positions,
-        }
+            note.animate.position = positions,
+        note.push();
     });
 }
+//!YOU NEED TO INCLUDE INTERNAL GHOSTY ABOVE THE DIFFERENT EFFECTS FUNCTIONS(Found Below)
 
 /**
- * Make notes bounce up and down like ghosts.
+ * Make notes(in the specified track) bounce up and down like ghosts.
  * This will override any animations already applied to the notes.
  * @param track The track to apply the effect to.
  * @param speed The speed in how many times it bounces before reaching the player.
@@ -32,16 +35,20 @@ function InternalGhosty(filteredNotes: Remapper.Note[], speed: number, maxY: num
  * @param easing The easing type.
  * @param transparent Should only the arrow be visible?
  * @author cal117
+ * @author IntoTheAbyss490(Updating Everything)
  */
-function GhostyTrack(track: string, speed: number, maxY: number, easing: Remapper.EASE = "easeInOutCubic", transparent?: boolean) {
-    const filteredNotes = Remapper.activeDiff.notes.filter(note => {
+
+export function GhostyTrack(track: string, speed: number, maxY: number, easing: EASE = "easeInOutCubic", transparent?: boolean) {
+    const filteredNotes = activeDiff.notes.filter(note => {
         if(!note.customData) note.customData = {};
-        if(Array.isArray(note.customData._track)) return note.customData._track.includes(track);
-        else if (note.customData._track == track) return true;
+        if(Array.isArray(note.track.value)) return note.track.value.includes(track);
+        else if (note.track.value == track) return true;
         else return false;
     });
     InternalGhosty(filteredNotes, speed, maxY, easing, transparent);
 }
+
+//GhostyTrack("track", 0.5, 1, "easeOutCubic", true)
 
 /**
  * Make notes bounce up and down like ghosts.
@@ -52,12 +59,12 @@ function GhostyTrack(track: string, speed: number, maxY: number, easing: Remappe
  * @param easing The easing to use.
  * @param transparent Should only the arrow be visible?
  * @author cal117
+ * @author IntoTheAbyss490(Updating Everything)
  */
-function Ghosty(startBeat: number, endBeat: number, speed: number, maxY: number, easing: Remapper.EASE = "easeInOutCubic", transparent?: boolean) {
-    const filteredNotes = Remapper.activeDiff.notes.filter(n => n.time >= startBeat && n.time <= endBeat);
+
+export function Ghosty(startBeat: number, endBeat: number, speed: number, maxY: number, easing: EASE = "easeInOutCubic", transparent?: boolean) {
+    const filteredNotes = activeDiff.notes.filter(n => n.time >= startBeat && n.time <= endBeat);
     InternalGhosty(filteredNotes, speed, maxY, easing, transparent);
 }
 
-export {
-    GhostyTrack, Ghosty
-};
+//Ghosty(0, 100, 0.5, 1, "easeOutCubic", false)

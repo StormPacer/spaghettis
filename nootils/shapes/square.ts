@@ -1,59 +1,41 @@
-import * as Remapper from "https://deno.land/x/remapper@2.1.0/src/mod.ts"
-
-/**
- * Spawns a wall square that you can later animate with AnimateTrack.
- * @param startTime The beat that the square should be spawned on.
- * @param endTime The beat that the square should disappear.
- * @param track What track the square walls should be assigned to.
- * @param x On which X position the square should spawn.
- * @param y On which Y position the square should spawn.
- * @param z On which Z position the square should spawn.
- * @param length How long the square walls should be.
- * @author StormPacer
- */
+// deno-lint-ignore-file
+import { Wall } from "https://deno.land/x/remapper@3.1.2/src/mod.ts";
 
 export function Square(startTime: number, endTime: number, track: string, x: number, y: number, z: number, length: number) {
-    let wall1 = new Remapper.Wall(startTime, endTime - startTime, 0, 1)
+    let wall1 = new Wall(startTime, endTime - startTime, 0, 1)
 
-    wall1.customData = {
-        _track: track,
-        _scale: [10, 0.1, length],
-        _animation: {
-            _definitePosition: [[x, y, z, 0]]
-        }
-    }
+        wall1.track.value = track,
+        wall1.scale = [10, 0.1, length],
+
+            wall1.animate.definitePosition = [[x, y, z, 0]]
+
     wall1.push()
 
-    let wall2 = new Remapper.Wall(startTime, endTime - startTime, 0, 1)
 
-    wall2.customData = {
-        _track: track,
-        _scale: [0.1, 10, length],
-        _animation: {
-            _definitePosition: [[x + 9.8, y, z, 0]]
-        }
-    }
+    let wall2 = new Wall(startTime, endTime - startTime, 0, 1)
+
+        wall2.track.value = track,
+        wall2.scale = [0.1, 10, length],
+
+            wall2.animate.definitePosition = [[x + 9.8, y, z, 0]]
+
     wall2.push()
 
-    let wall3 = new Remapper.Wall(startTime, endTime - startTime, 0, 1)
+    let wall3 = new Wall(startTime, endTime - startTime, 0, 1)
 
-    wall3.customData = {
-        _track: track,
-        _scale: [0.1, 10, length],
-        _animation: {
-            _definitePosition: [[x, y, z, 0]]
-        }
-    }
+        wall3.track.value = track,
+        wall3.scale = [0.1, 10, length],
+
+            wall3.animate.definitePosition = [[x, y, z, 0]]
+
     wall3.push()
 
-    let wall4 = new Remapper.Wall(startTime, endTime - startTime, 0, 1)
+    let wall4 = new Wall(startTime, endTime - startTime, 0, 1)
 
-    wall4.customData = {
-        _track: track,
-        _scale: [10, 0.1, length],
-        _animation: {
-            _definitePosition: [[x + -0.1, y + 10, z, 0]]
-        }
-    }
+        wall4.track.value = track,
+        wall4.scale = [10, 0.1, length],
+
+            wall4.animate.definitePosition = [[x + -0.1, y + 10, z, 0]]
+    
     wall4.push()
 }
